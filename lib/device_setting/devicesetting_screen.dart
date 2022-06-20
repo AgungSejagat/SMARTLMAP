@@ -1,7 +1,9 @@
+import 'package:firebase/providers/my_devices.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:provider/provider.dart';
 
 extension HexColor on Color {
   /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
@@ -34,7 +36,7 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
     setState(() => pickerColor = color);
   }
 
-  void pickColor(BuildContext context) => showDialog(
+  void pickColor(BuildContext context, String docId) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Pick a color!'),
@@ -52,7 +54,7 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
                 setState(() => currentColor = pickerColor);
                 FirebaseFirestore.instance
                     .collection('Neopixel')
-                    .doc('48053725BF58')
+                    .doc(docId)
                     .update({
                   'Red': currentColor.toRed(),
                   'Green': currentColor.toGreen(),
@@ -67,6 +69,10 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)!.settings.arguments;
+    final selectedDevice =
+        Provider.of<MyDevices>(context, listen: false).findById(id.toString());
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -85,7 +91,7 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
 
                 FirebaseFirestore.instance
                     .collection('Neopixel')
-                    .doc('48053725BF58')
+                    .doc(selectedDevice.espId)
                     .update({'Power': power});
               },
               style: ElevatedButton.styleFrom(
@@ -110,7 +116,7 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
                   size: 30,
                 ),
                 ElevatedButton(
-                  onPressed: () => pickColor(context),
+                  onPressed: () => pickColor(context, selectedDevice.espId),
                   child: const Text('change color'),
                 ),
               ],
@@ -127,7 +133,7 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
                     });
                     FirebaseFirestore.instance
                         .collection('Neopixel')
-                        .doc('48053725BF58')
+                        .doc(selectedDevice.espId)
                         .update({'Rainbow': rainbow});
                   },
                 ),

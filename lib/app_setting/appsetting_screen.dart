@@ -70,7 +70,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   Icons.people_alt_rounded,
                 ),
                 label: Text(
-                  'ABOUTUS',
+                  'ABOUT US',
                 ),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.indigo,

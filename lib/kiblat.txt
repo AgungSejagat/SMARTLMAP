@@ -3,10 +3,10 @@ screen sketch app MADE:
     - direct ke home screen
     - routing
 1. home screen (bapong)
-    - per user bisa add beberapa lampu
+    - per user bisa add beberapa lampu 1/2DONE
     - bisa delete lampu + pop up
-    - device settings button
-    - app settings button
+    - device settings button DONE
+    - app settings button DONE
 2. devicesettings screen (evania)
     - kirim on/off ke firestore
     - rainbow
@@ -17,8 +17,8 @@ screen sketch app MADE:
     - ganti bahasa
     - ganti theme
     - about us
-5. language screen
-    - pilih bahasa
+5. language screen (bpng)
+    - pilih bahasa 
 6. theme screen
     - ganti light/dark mode
 7. about us screen

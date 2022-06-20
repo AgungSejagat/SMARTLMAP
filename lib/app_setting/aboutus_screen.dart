@@ -5,6 +5,20 @@ class AboutUsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("CLARA"),
+        backgroundColor: Colors.indigo,
+      ),
+      body: Column(
+        children: [
+          Image.asset(
+            'assets/images/LOGO BINUS COMPENG.jpg',
+          ),
+          Text('Kami Mahasiswa Binus University Jurusan Computer Engineering'),
+          Text('membuat aplikasi untuk mengontrol sebuah lampu pintar'),
+        ],
+      ),
+    );
   }
 }

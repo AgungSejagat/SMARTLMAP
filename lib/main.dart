@@ -6,6 +6,8 @@ import '/app_setting/aboutus_screen.dart';
 import '/home_screen/home_screen.dart';
 import '/device_setting/devicesetting_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import '../providers/my_devices.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,22 +16,33 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  static final ValueNotifier<ThemeMode> themeNotifier =
+      ValueNotifier(ThemeMode.light);
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomeScreen(),
-      debugShowCheckedModeBanner: false,
-      initialRoute: 'home_screen',
-      routes: {
-        'home_screen': (context) => HomeScreen(),
-        'appsetting_screen': (context) => SettingScreen(),
-        'devicesetting_screen': (context) => DeviceSettingsScreen(),
-        'language_screen': (context) => LanguageScreen(),
-        'theme_screen': (context) => ThemeScreen(),
-        'aboutus_screen': (context) => AboutUsScreen(),
-      },
-    );
+    return ValueListenableBuilder(
+        valueListenable: themeNotifier,
+        builder: (_, ThemeMode currentMode, __) {
+          return ChangeNotifierProvider.value(
+              value: MyDevices(),
+              child: MaterialApp(
+                home: HomeScreen(),
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(primarySwatch: Colors.indigo),
+                darkTheme: ThemeData.dark(),
+                themeMode: currentMode,
+                initialRoute: 'home_screen',
+                routes: {
+                  'home_screen': (context) => HomeScreen(),
+                  'appsetting_screen': (context) => SettingScreen(),
+                  'devicesetting_screen': (context) => DeviceSettingsScreen(),
+                  'language_screen': (context) => LanguageScreen(),
+                  'theme_screen': (context) => ThemeScreen(),
+                  'aboutus_screen': (context) => AboutUsScreen(),
+                },
+              ));
+        });
   }
 }

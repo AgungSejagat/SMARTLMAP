@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 extension HexColor on Color {
   /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
@@ -39,7 +40,7 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
   void pickColor(BuildContext context, String docId) => showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Pick a color!'),
+          title: const Text("device_setting_changecolor_head").tr(),
           content: SingleChildScrollView(
             child: SlidePicker(
               pickerColor: pickerColor,
@@ -49,7 +50,7 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
           ),
           actions: <Widget>[
             ElevatedButton(
-              child: const Text('Got it'),
+              child: const Text("device_setting_changecolor_confirm").tr(),
               onPressed: () {
                 setState(() => currentColor = pickerColor);
                 FirebaseFirestore.instance
@@ -77,14 +78,15 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text("TR Smart Lamp"),
+        title: const Text("TR MADE"),
       ),
       body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center, //align center
-          children: [
-            ElevatedButton(
+        children: [
+          Container(
+            height: 200,
+            alignment: Alignment.center,
+            child: ElevatedButton(
               onPressed: () {
-                //setiap kali button ditekan,
                 setState(() {
                   power = !power;
                 });
@@ -95,33 +97,44 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
                     .update({'Power': power});
               },
               style: ElevatedButton.styleFrom(
-                //memberi style pada button
-                shape: const CircleBorder(), //bentuk
-                padding: const EdgeInsets.all(20), //ukuran
-                primary: power ? Colors.green : Colors.red, //warna
+                shape: CircleBorder(),
+                fixedSize: Size(80, 80),
+                elevation: 10,
+                primary: power ? Colors.green : Colors.red,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.power_settings_new,
-                color: Colors.black,
-                size: 30,
+                color: Colors.white,
+                size: 40,
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center, //align center
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.square,
-                  color: currentColor,
-                  size: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.square,
+                color: currentColor,
+                size: 55,
+              ),
+              ElevatedButton(
+                onPressed: () => pickColor(context, selectedDevice.espId),
+                child: const Text(
+                  "device_setting_changecolor",
+                  style: TextStyle(fontSize: 24),
+                ).tr(),
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(300, 45),
+                  elevation: 10,
+                  primary: Colors.indigo,
                 ),
-                ElevatedButton(
-                  onPressed: () => pickColor(context, selectedDevice.espId),
-                  child: const Text('change color'),
-                ),
-              ],
-            ),
-            Row(
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Container(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center, //align center
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -137,10 +150,12 @@ class _DeviceSettingsScreenState extends State<DeviceSettingsScreen> {
                         .update({'Rainbow': rainbow});
                   },
                 ),
-                const Text('  rainbow'),
+                Text('  Rainbow', style: TextStyle(fontSize: 20)),
               ],
-            )
-          ]),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

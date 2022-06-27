@@ -1,18 +1,25 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase/screens/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
-import '/app_setting/appsetting_screen.dart';
-import '/app_setting/language_screen.dart';
-import '/app_setting/theme_screen.dart';
-import '/app_setting/aboutus_screen.dart';
-import '/home_screen/home_screen.dart';
-import '/device_setting/devicesetting_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '../providers/my_devices.dart';
 import 'package:provider/provider.dart';
+
+
+import '/screens/app_setting_screen/appsetting_screen.dart';
+import '/screens/app_setting_screen/language_screen.dart';
+import '/screens/app_setting_screen/theme_screen.dart';
+import '/screens/app_setting_screen/aboutus_screen.dart';
+import '/screens/device_setting_screen/devicesetting_screen.dart';
+import '../providers/my_devices.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  await EasyLocalization.ensureInitialized();
+  runApp(EasyLocalization(
+      child: const MyApp(),
+      supportedLocales: [Locale('en'), Locale('es'), Locale('id')],
+      path: 'assets'));
 }
 
 class MyApp extends StatelessWidget {
@@ -26,23 +33,27 @@ class MyApp extends StatelessWidget {
         valueListenable: themeNotifier,
         builder: (_, ThemeMode currentMode, __) {
           return ChangeNotifierProvider.value(
-              value: MyDevices(),
-              child: MaterialApp(
-                home: HomeScreen(),
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(primarySwatch: Colors.indigo),
-                darkTheme: ThemeData.dark(),
-                themeMode: currentMode,
-                initialRoute: 'home_screen',
-                routes: {
-                  'home_screen': (context) => HomeScreen(),
-                  'appsetting_screen': (context) => SettingScreen(),
-                  'devicesetting_screen': (context) => DeviceSettingsScreen(),
-                  'language_screen': (context) => LanguageScreen(),
-                  'theme_screen': (context) => ThemeScreen(),
-                  'aboutus_screen': (context) => AboutUsScreen(),
-                },
-              ));
+            value: MyDevices(),
+            child: MaterialApp(//anjg sa
+              home: HomeScreen(),
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(primarySwatch: Colors.indigo),
+              darkTheme: ThemeData.dark(),
+              themeMode: currentMode,
+              initialRoute: 'home_screen',
+              routes: {
+                'home_screen': (context) => HomeScreen(),
+                'appsetting_screen': (context) => SettingScreen(),
+                'devicesetting_screen': (context) => DeviceSettingsScreen(),
+                'language_screen': (context) => LanguageScreen(),
+                'theme_screen': (context) => ThemeScreen(),
+                'aboutus_screen': (context) => AboutUsScreen(),
+              },
+            ),
+          );
         });
   }
 }

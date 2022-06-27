@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/main.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ThemeScreen extends StatefulWidget {
   const ThemeScreen({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("CLARA"),
+        title: Text("TR MADE"),
         backgroundColor: Colors.indigo,
       ),
       body: Column(
@@ -34,7 +35,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
               width: double.infinity,
               height: 20,
               child: FloatingActionButton.extended(
-                label: Text('Switch Theme'),
+                label: Text("switch_theme_button").tr(),
                 icon: Icon(MyApp.themeNotifier.value == ThemeMode.light
                     ? Icons.dark_mode
                     : Icons.light_mode),

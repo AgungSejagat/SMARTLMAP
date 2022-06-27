@@ -1,7 +1,10 @@
+//Untuk mengatur state secara individu, seperti tambah dan hapus device tanpa refresh satu poge
+
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import '../helpers/db_helper.dart';
 import '../models/device.dart';
+import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MyDevices with ChangeNotifier {
   List<Device> _items = [];
@@ -11,22 +14,29 @@ class MyDevices with ChangeNotifier {
   }
 
   Device findById(String id) {
-    return _items.firstWhere((Device) => Device.id == id);
+    final nullDevice = Device(
+      espId: '0',
+      name: '0',
+      room: '0'
+    );
+    return _items.firstWhere((Device) => Device.espId == id,
+        orElse: (() => nullDevice));
   }
 
   Future<void> addDevice(
     String pickedEspId,
     String pickedName,
+    String pickedRoom,
   ) async {
     final newDevice = Device(
-      id: DateTime.now().toString(),
+      //id: DateTime.now().toString(),
       espId: pickedEspId,
       name: pickedName,
+      room: pickedRoom,
     );
     _items.add(newDevice);
     notifyListeners();
     DBHelper.insert('user_devices', {
-      'id': newDevice.id,
       'espId': newDevice.espId,
       'name': newDevice.name,
     });
@@ -37,9 +47,9 @@ class MyDevices with ChangeNotifier {
     _items = dataList
         .map(
           (item) => Device(
-            id: item['id'],
             espId: item['espId'],
             name: item['name'],
+            room: item['room'],
           ),
         )
         .toList();
@@ -49,5 +59,10 @@ class MyDevices with ChangeNotifier {
   Future<void> deleteDevice(String table, String selectedId) async {
     await DBHelper.delete(table, selectedId);
     fetchAndSetDevices();
+  }
+
+  Future<void> changeLanguage(BuildContext context, String languageCode) async {
+    context.setLocale(Locale(languageCode));
+    notifyListeners();
   }
 }

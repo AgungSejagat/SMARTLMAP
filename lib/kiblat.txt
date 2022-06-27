@@ -11,15 +11,14 @@ screen sketch app MADE:
     - kirim on/off ke firestore
     - rainbow
     - color picker button
-3. colorpicker screen
     - kirim nilai rgb ke firestore
-4. appsettings screen
+3. appsettings screen
     - ganti bahasa
     - ganti theme
     - about us
-5. language screen (bpng)
+4. language screen (bpng)
     - pilih bahasa 
-6. theme screen
+5. theme screen
     - ganti light/dark mode
-7. about us screen
+6. about us screen
     - statik isi tulisan aja
